@@ -1,30 +1,45 @@
+//verificar se o jogador da vez possui jogada valida
+//solicitar jogada
+//pedir nome dos jogadores
+//criar "interface"
+//tabuleiro 8xH
+//exemplo de input de jogada: D6
+
 #include <stdio.h>
-char nome[10];
-int resposta;
-int pedeNome()
-{
-    printf("Qual seu nome? ");
-    scanf("%s", nome);
-}
 
-int verifica()
+int verificaEstilo()
 {
-    printf("Deseja exibir o nome?(1 = S, 2 = N) ");
-    scanf("%d", &resposta);
-}
-
-int retornaNome()
-{
-    if (resposta == 1)
+    int estilo;
+    scanf("%d", &estilo);
+    if (estilo == 1)
     {
-        printf("Seu nome é: %s!", nome);
-    }else(printf("Seu nome é: informação não exibida."));
+        return 1;
+    }
+    else if (estilo == 2)
+    {
+        return 2;
+    }
+    else
+    {
+        printf("Insira um valor válido!\n");
+        scanEstilo();
+    }
+}
+
+int estabeleceEstiloDeJogo()
+{
+    int estilo;
+    printf("Escolha o estilo do jogo:\n 1 - Jogador x Jogador\n 2 - Jogador x Computador\n");
+    estilo = verificaEstilo();
+    if(estilo = 1){
+        jogadorxjogador();
+    }else if(estilo = 2){
+        jogadorxpc();
+    }
 }
 
 int main()
 {
-    pedeNome();
-    verifica();
-    retornaNome();
+    estabeleceEstiloDeJogo();
     printf("\n");
 }
