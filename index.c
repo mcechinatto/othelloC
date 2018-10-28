@@ -7,52 +7,59 @@
 #include <stdio.h>
 #include <string.h>
 
-int verificaEstilo()
+char nome1[10], nome2[10];
+int modo;
+
+int verificaModo()
 {
-    int estilo;
-    scanf("%d", &estilo);
-    if (estilo == 1)
+    scanf("%d", &modo);
+    if (modo == 1)
     {
         return 1;
     }
-    else if (estilo == 2)
+    else if (modo == 2)
     {
         return 2;
     }
     else
     {
         printf("Insira um valor válido!\n");
-        verificaEstilo();
+        verificaModo();
     }
 }
 
-int jogadorxjogador()
+int pedeNomesJxJ()
 {
-    char nome1[10];
-    char nome2[10];
-    printf("Insira o nome do Jogador 1: ");
+    printf("Insira o nome do Jogador B: ");
     scanf("%s", nome1);
-    printf("Insira o nome do Jogador 2: ");
+    printf("Insira o nome do Jogador P: ");
+    scanf("%s", nome2);
+};
+
+int pedeNomeJxPC()
+{
+    printf("Insira o nome do Jogador: ");
     scanf("%s", nome1);
 }
 
-int estabeleceEstiloDeJogo()
+int estabeleceModoDeJogo()
 {
-    int estilo;
-    printf("Escolha o estilo do jogo:\n 1 - Jogador x Jogador\n 2 - Jogador x Computador\n");
-    estilo = verificaEstilo();
-    if (estilo = 1)
-    {
-        jogadorxjogador();
-    }
-    else if (estilo = 2)
-    {
-        //jogadorxpc();
-    }
+    printf("Escolha o modo do jogo:\n 1 - Jogador x Jogador\n 2 - Jogador x Computador\n");
+    modo = verificaModo();    
 }
 
 int main()
 {
-    estabeleceEstiloDeJogo();
+    estabeleceModoDeJogo();
+    if (modo == 1)
+    {
+        pedeNomesJxJ();
+        //jogadorxjogador();
+    }
+    else if (modo == 2)
+    {
+        pedeNomeJxPC();
+        //jogadorxpc();
+    }
     printf("\n");
 }
