@@ -6,7 +6,7 @@
 #include <string.h>
 
 char nome1[10], nome2[15], tabuleiro[8][8], jogada[2];
-int modo; 
+int modo;
 int fimDeJogo = 0;
 int turno = 1;
 
@@ -62,12 +62,14 @@ void pedeJogada()
     printf("\n");
     printf("\n");
     char entrada[2];
-    if (turno%2 != 0)
+    if (turno % 2 != 0)
     {
         printf("Jogador B <%s>: ", nome1);
         scanf("%s", entrada);
         strcpy(jogada, entrada);
-    }else{
+    }
+    else
+    {
         printf("Jogador P <%s>: ", nome2);
         scanf("%s", entrada);
         strcpy(jogada, entrada);
@@ -95,37 +97,36 @@ void mostraTabuleiro()
     printf("\n");
     printf("Jogador B: %s\n", nome1);
     printf("Jogador P: %s\n", nome2);
-    while(fimDeJogo != 1){
-    printf("\n");
-    int i, k, colunas[8];
-    k = 65;
-    printf(" ");
-    for (i = 0; i < 8; i++)
+    while (fimDeJogo != 1)
     {
-        colunas[i] = k;
-        printf(" %c", colunas[i]);
-        k++;
-    }
-
-    for (k = 0; k < 8; k++)
-    {
-        printf("\n%d", k + 1);
+        printf("\n");
+        int i, k, colunas[8];
+        k = 65;
+        printf(" ");
         for (i = 0; i < 8; i++)
         {
-            printf("|%c", tabuleiro[k][i]);
+            colunas[i] = k;
+            printf(" %c", colunas[i]);
+            k++;
         }
-        printf("|");
-    }
-    pedeJogada();
+
+        for (k = 0; k < 8; k++)
+        {
+            printf("\n%d", k + 1);
+            for (i = 0; i < 8; i++)
+            {
+                printf("|%c", tabuleiro[k][i]);
+            }
+            printf("|");
+        }
+        pedeJogada();
     }
 }
 
 void jogadorxjogador()
 {
     pedeNomesJxJ();
-    
     mostraTabuleiro();
-    
 }
 
 void jogadorxpc()
