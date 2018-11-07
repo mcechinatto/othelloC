@@ -1,15 +1,26 @@
 //verificar se o jogador da vez possui jogada valida
 //solicitar jogada
 //exemplo de input de jogada: D6
+//fazer IA
+//criar armazenagem de highscores
 
 #include <stdio.h>
 #include <string.h>
 
-char nome1[10], nome2[15], tabuleiro[8][8], jogada[2];
+//variáveis que recebem os nomes dos jogadores
+char nome1[15], nome2[15];
+//variáveil que recebe os valores das casas do tabuleuiro
+char tabuleiro[8][8];
+//variável que recebe a ultima jogada efetuada
+char jogada[2];
+//variável que recebe o modo do jogo (JxJ/JxPC)
 int modo;
+//variável que guarda o estado do jogo (em execução = 0 / finalizado = 1)
 int fimDeJogo = 0;
+//variável que define de quem é o turno (ímpar = Branco / par = Preto)
 int turno = 1;
 
+//método que seta o tabuleiro na sua forma inicial
 void setaTabuleiro()
 {
     int i, k;
@@ -33,6 +44,7 @@ void setaTabuleiro()
     }
 }
 
+//método que pergunta ao jogador o modo do jogo (JxJ/JxPC)
 int verificaModo()
 {
     scanf("%d", &modo);
@@ -51,12 +63,15 @@ int verificaModo()
     }
 }
 
+//método que dá as opções do modo de jogo e chama a função verificaModo
 void estabeleceModoDeJogo()
 {
     printf("Escolha o modo do jogo:\n 1 - 1 Jogador\n 2 - 2 Jogadores \n");
     modo = verificaModo();
 }
 
+//método que recebe a jogada do jogador
+//@TODO: verificar se a jogada é valida
 void pedeJogada()
 {
     printf("\n");
@@ -77,21 +92,26 @@ void pedeJogada()
     turno++;
 }
 
-void pedeNomesJxJ()
+//método que pede e instancia o nome dos jogadores
+void pedeNomes()
 {
-    printf("Insira o nome do Jogador B: ");
-    scanf("%s", nome1);
-    printf("Insira o nome do Jogador P: ");
-    scanf("%s", nome2);
+    if (modo == 1)
+    {
+        printf("Insira o nome do Jogador: ");
+        scanf("%s", nome1);
+        strcpy(nome2, "Computador");
+    }
+    else
+    {
+        printf("Insira o nome do Jogador B: ");
+        scanf("%s", nome1);
+        printf("Insira o nome do Jogador P: ");
+        scanf("%s", nome2);
+    }
 }
 
-void pedeNomeJxPC()
-{
-    printf("Insira o nome do Jogador: ");
-    scanf("%s", nome1);
-    strcpy(nome2, "Computador");
-}
-
+//método que chama o tabuleiro e a função pedeJogada
+//fica em funcionamento até que o modo de jogo seja alterado
 void mostraTabuleiro()
 {
     printf("\n");
@@ -123,29 +143,11 @@ void mostraTabuleiro()
     }
 }
 
-void jogadorxjogador()
-{
-    pedeNomesJxJ();
-    mostraTabuleiro();
-}
-
-void jogadorxpc()
-{
-    pedeNomeJxPC();
-    mostraTabuleiro();
-}
-
 void main()
 {
     setaTabuleiro();
     estabeleceModoDeJogo();
-    if (modo == 1)
-    {
-        jogadorxpc();
-    }
-    else if (modo == 2)
-    {
-        jogadorxjogador();
-    }
+    pedeNomes();
+    mostraTabuleiro();
     printf("\n");
 }
