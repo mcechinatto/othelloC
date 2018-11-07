@@ -3,13 +3,14 @@
 //exemplo de input de jogada: D6
 //fazer IA
 //criar armazenagem de highscores
+//arrumar pois peça PRETA inicia o jogo
 
 #include <stdio.h>
 #include <string.h>
 
 //variáveis que recebem os nomes dos jogadores
 char nome1[15], nome2[15];
-//variáveil que recebe os valores das casas do tabuleuiro
+//variável que recebe os valores das casas do tabuleuiro
 char tabuleiro[8][8];
 //variável que recebe a ultima jogada efetuada
 char jogada[2];
@@ -47,12 +48,13 @@ void setaTabuleiro()
 //método que pergunta ao jogador o modo do jogo (JxJ/JxPC)
 int verificaModo()
 {
-    scanf("%d", &modo);
-    if (modo == 1)
+    char estilo;
+    scanf("%s", &estilo);
+    if (estilo == 49)
     {
         return 1;
     }
-    else if (modo == 2)
+    else if (estilo == 50)
     {
         return 2;
     }
@@ -110,15 +112,12 @@ void pedeNomes()
     }
 }
 
-//método que chama o tabuleiro e a função pedeJogada
-//fica em funcionamento até que o modo de jogo seja alterado
+//método que instancia o tabuleiro com seus valores mais recentes
 void mostraTabuleiro()
 {
     printf("\n");
     printf("Jogador B: %s\n", nome1);
-    printf("Jogador P: %s\n", nome2);
-    while (fimDeJogo != 1)
-    {
+    printf("Jogador P: %s\n", nome2);    
         printf("\n");
         int i, k, colunas[8];
         k = 65;
@@ -139,8 +138,6 @@ void mostraTabuleiro()
             }
             printf("|");
         }
-        pedeJogada();
-    }
 }
 
 void main()
@@ -148,6 +145,11 @@ void main()
     setaTabuleiro();
     estabeleceModoDeJogo();
     pedeNomes();
-    mostraTabuleiro();
-    printf("\n");
+    //enquanto o estado do jogo não é alterado o tabuleiro é mostrado
+    //e uma nova jogada é solicitada ao jogador da vez
+    while (fimDeJogo != 1)
+    {
+        mostraTabuleiro();
+        pedeJogada();
+    }
 }
