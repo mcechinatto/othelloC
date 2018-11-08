@@ -1,9 +1,8 @@
-//verificar se o jogador da vez possui jogada valida
-//solicitar jogada
+//verificar se o jogador da vez possui movimento valido e se o escolhido tbm é
 //exemplo de input de jogada: D6
 //fazer IA
+//contagem de pontos
 //criar armazenagem de highscores
-//arrumar pois peça PRETA inicia o jogo
 
 #include <stdio.h>
 #include <string.h>
@@ -45,6 +44,19 @@ void setaTabuleiro()
     }
 }
 
+//método que insere um valor no tabuleiro
+void insereValorTabuleiro(int linha, int coluna)
+{
+    if (turno % 2 != 0)
+    {
+        tabuleiro[linha][coluna] = 80;
+    }
+    else
+    {
+        tabuleiro[linha][coluna] = 66;
+    }
+}
+
 //método que pergunta ao jogador o modo do jogo (JxJ/JxPC)
 int verificaModo()
 {
@@ -73,27 +85,62 @@ void estabeleceModoDeJogo()
 }
 
 //método que recebe a jogada do jogador
-//@TODO: verificar se a jogada é valida
 void pedeJogada()
 {
     printf("\n");
     printf("\n");
-    char entrada[2];
     if (turno % 2 != 0)
     {
-        printf("Jogador B <%s>: ", nome1);
-        scanf("%s", entrada);
-        strcpy(jogada, entrada);
+        printf("Jogador P <%s>: ", nome1);
+        scanf("%s", jogada);
     }
     else
     {
-        printf("Jogador P <%s>: ", nome2);
-        scanf("%s", entrada);
-        strcpy(jogada, entrada);
+        printf("Jogador B <%s>: ", nome2);
+        scanf("%s", jogada);
     }
-    turno++;
 }
 
+//metódo que verifica a formatação da jogada e a respectiva casa
+void verificaJogada(char jogada[2])
+{
+    int i, linha, coluna;
+    int cont1 = 0;
+    int contColuna = 0;
+    for (i = 65; i < 73; i++)
+    {
+        if (jogada[0] == i)
+        {
+            coluna = cont1;
+            contColuna++;
+        }
+        cont1++;
+    }
+
+    int cont2 = 0;
+    int contLinha = 0;
+    for (i = 49; i < 57; i++)
+    {
+        if (jogada[1] == i)
+        {
+            linha = cont2;
+            contLinha++;
+        }
+        cont2++;
+    }
+
+    if (contLinha == 0 || contColuna == 0)
+    {
+        printf("Valor inserido inválido!\nExemplo de jogada: D6.");
+        pedeJogada();
+        verificaJogada(jogada);
+    }
+    else
+    {
+        insereValorTabuleiro(linha, coluna);
+        turno++;
+    }
+}
 //método que pede e instancia o nome dos jogadores
 void pedeNomes()
 {
@@ -105,9 +152,9 @@ void pedeNomes()
     }
     else
     {
-        printf("Insira o nome do Jogador B: ");
-        scanf("%s", nome1);
         printf("Insira o nome do Jogador P: ");
+        scanf("%s", nome1);
+        printf("Insira o nome do Jogador B: ");
         scanf("%s", nome2);
     }
 }
@@ -116,28 +163,28 @@ void pedeNomes()
 void mostraTabuleiro()
 {
     printf("\n");
-    printf("Jogador B: %s\n", nome1);
-    printf("Jogador P: %s\n", nome2);    
-        printf("\n");
-        int i, k, colunas[8];
-        k = 65;
-        printf(" ");
+    printf("Jogador P: %s\n", nome1);
+    printf("Jogador B: %s\n", nome2);
+    printf("\n");
+    int i, k, colunas[8];
+    k = 65;
+    printf(" ");
+    for (i = 0; i < 8; i++)
+    {
+        colunas[i] = k;
+        printf(" %c", colunas[i]);
+        k++;
+    }
+
+    for (k = 0; k < 8; k++)
+    {
+        printf("\n%d", k + 1);
         for (i = 0; i < 8; i++)
         {
-            colunas[i] = k;
-            printf(" %c", colunas[i]);
-            k++;
+            printf("|%c", tabuleiro[k][i]);
         }
-
-        for (k = 0; k < 8; k++)
-        {
-            printf("\n%d", k + 1);
-            for (i = 0; i < 8; i++)
-            {
-                printf("|%c", tabuleiro[k][i]);
-            }
-            printf("|");
-        }
+        printf("|");
+    }
 }
 
 void main()
@@ -151,5 +198,6 @@ void main()
     {
         mostraTabuleiro();
         pedeJogada();
+        verificaJogada(jogada);
     }
 }
