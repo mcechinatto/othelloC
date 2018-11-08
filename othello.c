@@ -1,3 +1,7 @@
+//Desenvolvido por Mayara Cechinatto e Bruno Paese Pressanto
+//mcechinatto@ucs.br / bppressanto@ucs.br
+//Outubro de 2018
+
 //verificar se o jogador da vez possui movimento valido e se o escolhido tbm é
 //exemplo de input de jogada: D6
 //fazer IA
