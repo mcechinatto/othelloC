@@ -2,11 +2,16 @@
 //mcechinatto@ucs.br / bppressanto@ucs.br
 //Outubro de 2018
 
-//verificar se o jogador da vez possui movimento valido e se o escolhido tbm é
-//exemplo de input de jogada: D6
+//@TODOS:
+//verificar se o movimento é permitido
+//verificar se há jogadas válidas para o determinado jogador
+//fazer "comer" as peças
 //fazer IA
 //contagem de pontos
 //criar armazenagem de highscores
+//fazer contagem da partida
+//Criar menu: Novo Jogo / Ver highscores
+//pedir se deseja reiniciar o jogo
 
 #include <stdio.h>
 #include <string.h>
@@ -17,7 +22,7 @@ char nome1[15], nome2[15];
 char tabuleiro[8][8];
 //variável que recebe a ultima jogada efetuada
 char jogada[2];
-//variável que recebe o modo do jogo (JxJ/JxPC)
+//variável que recebe o modo do jogo (JxPC = 1 / JxJ = 2)
 int modo;
 //variável que guarda o estado do jogo (em execução = 0 / finalizado = 1)
 int fimDeJogo = 0;
@@ -88,6 +93,13 @@ void estabeleceModoDeJogo()
     modo = verificaModo();
 }
 
+//metódo que verifica se o movimento pedido pelo jogador é válido
+void verificaMovimento(int linha, int coluna){
+
+    insereValorTabuleiro(linha, coluna);
+    turno++;
+}
+
 //método que recebe a jogada do jogador
 void pedeJogada()
 {
@@ -106,6 +118,7 @@ void pedeJogada()
 }
 
 //metódo que verifica a formatação da jogada e a respectiva casa
+//chama função que verifica se o movimento é válido
 void verificaJogada(char jogada[2])
 {
     int i, linha, coluna;
@@ -141,10 +154,16 @@ void verificaJogada(char jogada[2])
     }
     else
     {
-        insereValorTabuleiro(linha, coluna);
-        turno++;
+        verificaMovimento(linha, coluna);        
     }
 }
+
+//@TODO: método que verifica se existe jogada válida para aquele jogador
+void verificaJogadaValida(){
+    pedeJogada();
+    verificaJogada(jogada);
+}
+
 //método que pede e instancia o nome dos jogadores
 void pedeNomes()
 {
@@ -201,7 +220,6 @@ void main()
     while (fimDeJogo != 1)
     {
         mostraTabuleiro();
-        pedeJogada();
-        verificaJogada(jogada);
+        verificaJogadaValida();        
     }
 }
