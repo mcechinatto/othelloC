@@ -98,10 +98,9 @@ void insereJogada(int linha, int coluna)
             }
             else if (tabuleiro[linha][i] == cor)
             {
-                int j;
-                for (j = i; j < coluna; j++)
+                for (i; i < coluna; i++)
                 {
-                    tabuleiro[linha][j] = cor;
+                    tabuleiro[linha][i] = cor;
                 }
                 break;
             }
@@ -123,10 +122,9 @@ void insereJogada(int linha, int coluna)
             }
             else if (tabuleiro[linha][i] == cor)
             {
-                int j;
-                for (j = i; j > coluna; j--)
+                for (i; i > coluna; i--)
                 {
-                    tabuleiro[linha][j] = cor;
+                    tabuleiro[linha][i] = cor;
                 }
                 break;
             }
@@ -148,10 +146,9 @@ void insereJogada(int linha, int coluna)
             }
             else if (tabuleiro[i][coluna] == cor)
             {
-                int j;
-                for (j = i; j > linha; j--)
+                for (i; i > linha; i--)
                 {
-                    tabuleiro[j][coluna] = cor;
+                    tabuleiro[i][coluna] = cor;
                 }
                 break;
             }
@@ -173,10 +170,9 @@ void insereJogada(int linha, int coluna)
             }
             else if (tabuleiro[i][coluna] == cor)
             {
-                int j;
-                for (j = i; j < linha; j++)
+                for (i; i < linha; i++)
                 {
-                    tabuleiro[j][coluna] = cor;
+                    tabuleiro[i][coluna] = cor;
                 }
                 break;
             }
@@ -187,27 +183,30 @@ void insereJogada(int linha, int coluna)
         }
     }
     i = linha - 1;
-    int k = coluna -1;
+    int k = coluna - 1;
+    int cont = 0;
     if (tabuleiro[i][k] == corAdv)
     {
         i--;
         k--;
+        cont++;
         while (i > -1 && k > -1)
         {
             if (tabuleiro[i][k] == corAdv)
             {
                 i--;
                 k--;
+                cont++;
             }
             else if (tabuleiro[i][k] == cor)
             {
-                int j, l;
-                for (j = i; j < linha; j++)
+                cont++;
+                while (cont > 0)
                 {
-                    for(l = k; l < coluna; l++){
-                        tabuleiro[j][l] = cor;
-                    }
-                    
+                    tabuleiro[i][k] = cor;
+                    cont--;
+                    k++;
+                    i++;
                 }
                 break;
             }
@@ -219,26 +218,29 @@ void insereJogada(int linha, int coluna)
     }
     i = linha - 1;
     k = coluna + 1;
+    cont = 0;
     if (tabuleiro[i][k] == corAdv)
     {
         i--;
         k++;
+        cont++;
         while (i > -1 && k < 8)
         {
             if (tabuleiro[i][k] == corAdv)
             {
                 i--;
                 k++;
+                cont++;
             }
             else if (tabuleiro[i][k] == cor)
             {
-                int j, l;
-                for (j = i; j < linha; j++)
+                cont++;
+                while (cont > 0)
                 {
-                    for(l = k; l > coluna; l--){
-                        tabuleiro[j][l] = cor;
-                    }
-                    
+                    tabuleiro[i][k] = cor;
+                    i++;
+                    k--;
+                    cont--;
                 }
                 break;
             }
@@ -250,67 +252,73 @@ void insereJogada(int linha, int coluna)
     }
     i = linha + 1;
     k = coluna + 1;
+    cont = 0;
     if (tabuleiro[i][k] == corAdv)
     {
         i++;
         k++;
+        cont++;
         while (i < 8 && k < 8)
         {
             if (tabuleiro[i][k] == corAdv)
             {
                 i++;
                 k++;
+                cont++;
             }
             else if (tabuleiro[i][k] == cor)
             {
-                int j, l;
-                for (j = i; j > linha; j--)
+                cont++;
+                while (cont > 0)
                 {
-                    for(l = k; l > coluna; l--){
-                        tabuleiro[j][l] = cor;
-                    }
-                    
-                }
-                break;
+                    tabuleiro[i][k] = cor;
+                    i--;
+                    k--;
+                    cont--;                
             }
-            else
-            {
-                break;
-            }
+            break;
         }
-    }
-    i = linha + 1;
-    k = coluna - 1;
-    if (tabuleiro[i][k] == corAdv)
-    {
-        i++;
-        k--;
-        while (i < 8 && k > -1)
+        else
         {
-            if (tabuleiro[i][k] == corAdv)
-            {
-                i++;
-                k--;
-            }
-            else if (tabuleiro[i][k] == cor)
-            {
-                int j, l;
-                for (j = i; j > linha; j--)
-                {
-                    for(l = k; l < coluna; l++){
-                        tabuleiro[j][l] = cor;
-                    }
-                    
-                }
-                break;
-            }
-            else
-            {
-                break;
-            }
+            break;
         }
     }
-    turno++;
+}
+i = linha + 1;
+k = coluna - 1;
+cont = 0;
+if (tabuleiro[i][k] == corAdv)
+{
+    i++;
+    k--;
+    cont++;
+    while (i < 8 && k > -1)
+    {
+        if (tabuleiro[i][k] == corAdv)
+        {
+            i++;
+            k--;
+            cont++;
+        }
+        else if (tabuleiro[i][k] == cor)
+        {
+            cont++;
+            while (cont>0)
+                {
+                    tabuleiro[i][k] = cor;
+                    i--;
+                    k++;
+                    cont--;                
+            }
+            break;
+        }
+        else
+        {
+            break;
+        }
+    }
+}
+turno++;
 }
 
 //metódo que verifica se o movimento pedido pelo jogador está presente
