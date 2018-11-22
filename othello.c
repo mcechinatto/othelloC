@@ -26,11 +26,12 @@ int modo;
 int fimDeJogo = 0;
 //variável que define de quem é o turno (ímpar = Preto / par = Branco)
 int turno = 1;
-//variáveis que recebem o código da cor do jogador do turno e do adversário
+//variáveis que recebem o código da cor do jogador do turno e do adversário (B = 66 P = 80)
 int cor, corAdv;
 //array que recebe a posição das jogadas válidas
 int arrayJogadasValidas[60][2];
-
+//váriável que recebe a jogada do PC (selecionada aleatoriamente do Array de jogadas válidas)
+int jogadaPC[2];
 //método que seta o tabuleiro na sua forma inicial
 void setaTabuleiro()
 {
@@ -638,6 +639,17 @@ int jogadasValidas()
     return contJogadasValidas;
 }
 
+//método que realiza a movimentação do computador
+void turnoPC(){
+    int i = 0;
+    int cont = 0;
+    while(arrayJogadasValidas[i]){
+        cont++;
+    }
+    printf("%d"cont);
+    fimDeJogo = 1;
+}
+
 //método que verifica se existe jogada válida para aquele jogador apartir do valor retornado pela função jogadasValidas
 void verificaJogadaValida()
 {
@@ -652,8 +664,12 @@ void verificaJogadaValida()
     {
         if (jogadasValidas() > 0)
         {
-            pedeJogada();
-            verificaFormatacaoJogada(jogada);
+            if (modo == 1 && cor == 66){
+                turnoPC();
+            }else{
+                pedeJogada();
+                verificaFormatacaoJogada(jogada);
+            }            
         }
         else
         {
