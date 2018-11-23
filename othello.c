@@ -1,15 +1,12 @@
 //Desenvolvido por Mayara Cechinatto e Bruno Paese Pressanto
 //mcechinatto@ucs.br / bppressanto@ucs.br
-//Outubro de 2018
+//2018
 
 //@TODOS:
-//fazer IA
-//contagem de pontos
 //criar armazenagem de highscores
 //fazer contagem da partida
 //Criar menu: Novo Jogo / Ver highscores
 //pedir se deseja reiniciar o jogo
-//fazer fim do jogo
 
 #include <stdio.h>
 #include <string.h>
@@ -418,9 +415,11 @@ void verificaFormatacaoJogada(char jogada[2])
 //verifica se ela pode jogar em linha, coluna ou diagonais
 int jogadasValidas()
 {
-    int i, k, j;
+    int i, k;
     int casasVazias = 0;
     int contJogadasValidas = 0;
+    int preto = 0;
+    int branco = 0;
     for (k = 0; k < 8; k++)
     {
         for (i = 0; i < 8; i++)
@@ -429,7 +428,22 @@ int jogadasValidas()
             {
                 casasVazias++;
             }
-            if (casasVazias > 0)
+            if (tabuleiro[k][i] == 66)
+            {
+                branco++;
+            }
+            if (tabuleiro[k][i] == 80)
+            {
+                preto++;
+            }
+        }
+    }
+
+    if (casasVazias > 0 && branco > 0 && preto > 0)
+    {
+        for (k = 0; k < 8; k++)
+        {
+            for (i = 0; i < 8; i++)
             {
                 if (tabuleiro[k][i] == cor)
                 {
@@ -633,34 +647,18 @@ int jogadasValidas()
                     }
                 }
             }
-            else
-            {
-                contJogadasValidas = -1;
-            }
         }
+    }
+    else
+    {
+        contJogadasValidas = -1;
     }
     return contJogadasValidas;
 }
 
 //método que realiza a movimentação do computador
-void turnoPC()
+void turnoPC(int cont)
 {
-    int i = 0;
-    int cont = 0;
-
-    while (i > -1)
-    {
-        if (!arrayJogadasValidas[i][0])
-        {
-            i = -1;
-        }
-        else
-        {
-            i++;
-            cont++;
-        }
-    }
-
     int num = rand() % cont + 1;
     int l = arrayJogadasValidas[num - 1][0];
     int c = arrayJogadasValidas[num - 1][1];
@@ -673,44 +671,55 @@ void verificaJogadaValida()
 {
     //Limpa o array com jogadas válidas para que novas sejam inseridas
     memset(arrayJogadasValidas, 0, sizeof(arrayJogadasValidas));
-    if (jogadasValidas() == -1)
+    int numJogadas = jogadasValidas();
+    if (numJogadas == -1)
     {
-        printf("Tabuleiro Cheio");
         fimDeJogo = 1;
     }
     else
     {
-        if (jogadasValidas() > 0)
+        if (numJogadas > 0)
         {
-            // if (modo == 1 && cor == 66)
-            // {
-                turnoPC();
-            // }
-            // else
-            // {
-            //     pedeJogada();
-            //     verificaFormatacaoJogada(jogada);
-            // }
-        }
-        else
-        {
-            if (turno % 2 != 0)
-            {
-                printf("\n\nNão há jogada válida para o jogador %s, passou a vez.", nome1);
-            }
-            else
-            {
-                printf("\n\nNão há jogada válida para o jogador %s, passou a vez.", nome2);
-            }
-            turno++;
             if (modo == 1 && cor == 66)
             {
-                turnoPC();
+            turnoPC(numJogadas);
             }
             else
             {
                 pedeJogada();
                 verificaFormatacaoJogada(jogada);
+            }
+        }
+        else
+        {
+            if (modo == 2)
+            {
+                if (turno % 2 != 0)
+                {
+                    printf("\n\nNão há jogada válida para o jogador %s, passou a vez.", nome1);
+                }
+                else
+                {
+                    printf("\n\nNão há jogada válida para o jogador %s, passou a vez.", nome2);
+                }
+                turno++;
+                pedeJogada();
+                verificaFormatacaoJogada(jogada);
+            }
+            else
+            {
+                if (turno % 2 != 0)
+                {
+                    printf("\n\nNão há jogada válida para o jogador %s, passou a vez.", nome1);
+                    turno++;
+                    turnoPC(jogadasValidas());
+                }
+                else
+                {
+                    printf("\n\nNão há jogada válida para o jogador %s, passou a vez.", nome2);
+                    pedeJogada();
+                    verificaFormatacaoJogada(jogada);
+                }
             }
         }
     }
@@ -756,7 +765,7 @@ void mostraTabuleiro()
         printf("\n%d", k + 1);
         for (i = 0; i < 8; i++)
         {
-            printf("|%c", tabuleiro[k][i]);
+            printf("|%C", tabuleiro[k][i]);
         }
         printf("|");
     }
@@ -778,6 +787,19 @@ void finalizaJogo()
                 pontuacaoP++;
             }
         }
+    }
+    printf("\n");
+    if (pontuacaoP > pontuacaoB)
+    {
+        printf("\nJogador %s Venceu! Sua pontuação: %d\n", nome1, pontuacaoP);
+    }
+    else if (pontuacaoP == pontuacaoB)
+    {
+        printf("\nO jogo terminou empatado! Pontuação dos jogadors: %d\n", pontuacaoP);
+    }
+    else
+    {
+        printf("\nJogador %s Venceu! Sua pontuação: %d\n", nome2, pontuacaoB);
     }
 }
 
@@ -803,7 +825,6 @@ void main()
             cor = 66;
             corAdv = 80;
         }
-        printf("%d",cont);
         mostraTabuleiro();
         verificaJogadaValida();
     }
