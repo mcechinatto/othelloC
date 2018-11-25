@@ -3,9 +3,7 @@
 //2018
 
 //@TODOS:
-//criar armazenagem de highscores
-//fazer contagem da partida
-//Criar menu: Novo Jogo / Ver highscores
+//criar arquivo que armazena numero da partida, nome e pontuação dos jogadores
 //pedir se deseja reiniciar o jogo
 
 #include <stdio.h>
@@ -680,15 +678,15 @@ void verificaJogadaValida()
     {
         if (numJogadas > 0)
         {
-            if (modo == 1 && cor == 66)
-            {
+            // if (modo == 1 && cor == 66)
+            // {
             turnoPC(numJogadas);
-            }
-            else
-            {
-                pedeJogada();
-                verificaFormatacaoJogada(jogada);
-            }
+            // }
+            // else
+            // {
+            //     pedeJogada();
+            //     verificaFormatacaoJogada(jogada);
+            // }
         }
         else
         {
@@ -795,7 +793,7 @@ void finalizaJogo()
     }
     else if (pontuacaoP == pontuacaoB)
     {
-        printf("\nO jogo terminou empatado! Pontuação dos jogadors: %d\n", pontuacaoP);
+        printf("\nO jogo terminou empatado! Pontuação dos jogadores: %d\n", pontuacaoP);
     }
     else
     {
@@ -829,4 +827,26 @@ void main()
         verificaJogadaValida();
     }
     finalizaJogo();
+    int partidas, i;
+    FILE *arquivo = fopen("/home/mayara/code/othello/arquivo.txt", "a");
+
+    if (arquivo == NULL)
+    {
+        printf("Não foi possível guardar os valores da partida.");
+    }
+    else
+    {
+        while (!feof(arquivo))
+        {
+            i = fgetc(arquivo);
+            if (i == '\n')
+            {
+                partidas++;
+            }
+        }
+        char dataToAppend[50];
+        sprintf(dataToAppend, "%d", partidas);
+        fputs(dataToAppend, arquivo);
+        fclose(arquivo);
+    }
 }
