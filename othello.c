@@ -2,10 +2,6 @@
 //mcechinatto@ucs.br / bppressanto@ucs.br
 //2018
 
-//@TODOS:
-//criar arquivo que armazena numero da partida, nome e pontuação dos jogadores
-//pedir se deseja reiniciar o jogo
-
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -79,7 +75,7 @@ int verificaModo()
 //método que dá as opções do modo de jogo e chama a função verificaModo
 void estabeleceModoDeJogo()
 {
-    printf("\nJogo de Othello.\n\nAceita como jogada letras maíusculas seguidas de um número,\nrepresentado a casa selecionada para a inserção da pedra.");
+    printf("\nJogo de Othello.");
     printf("\n\nEscolha o modo do jogo:\n 1 - 1 Jogador\n 2 - 2 Jogadores \n");
     modo = verificaModo();
 }
@@ -366,12 +362,12 @@ void pedeJogada()
 //chama função que verifica se o movimento é válido
 void verificaFormatacaoJogada(char jogada[2])
 {
-    int i, linha, coluna;
+    int i, k, linha, coluna;
     int cont1 = 0;
     int contColuna = 0;
-    for (i = 65; i < 73; i++)
+    for (i = 65,k = 97; i < 73, k < 105; i++, k++)
     {
-        if (jogada[0] == i)
+        if (jogada[0] == i || jogada[0] == k) 
         {
             coluna = cont1;
             contColuna++;
@@ -393,7 +389,7 @@ void verificaFormatacaoJogada(char jogada[2])
 
     if (contLinha == 0 || contColuna == 0)
     {
-        printf("Valor inserido inválido!\nVerifique se o valor digitado é composto de uma letra maiúscula entre A e H e um número entre 1 e 8.\nExemplo de jogada: D6.");
+        printf("Valor inserido inválido!\nVerifique se o valor digitado é composto de uma letra entre A e H e um número entre 1 e 8.\nExemplo de jogada: D6.");
     }
     else
     {
@@ -681,15 +677,15 @@ void verificaJogadaValida()
     {
         if (numJogadas > 0)
         {
-            if (modo == 1 && cor == 66)
-            {
+            // if (modo == 1 && cor == 66)
+            // {
                 turnoPC(numJogadas);
-            }
-            else
-            {
-                pedeJogada();
-                verificaFormatacaoJogada(jogada);
-            }
+            // }
+            // else
+            // {
+            //     pedeJogada();
+            //     verificaFormatacaoJogada(jogada);
+            // }
         }
         else
         {
@@ -704,6 +700,7 @@ void verificaJogadaValida()
                     printf("\n\nNão há jogada válida para o jogador %s, passou a vez.", nome2);
                 }
                 turno++;
+                jogadasValidas();
                 pedeJogada();
                 verificaFormatacaoJogada(jogada);
             }
@@ -718,6 +715,8 @@ void verificaJogadaValida()
                 else
                 {
                     printf("\n\nNão há jogada válida para o jogador %s, passou a vez.", nome2);
+                    turno ++;
+                    jogadasValidas();
                     pedeJogada();
                     verificaFormatacaoJogada(jogada);
                 }
