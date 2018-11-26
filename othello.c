@@ -29,6 +29,8 @@ int cor, corAdv;
 int arrayJogadasValidas[60][2];
 //variaveis que guardam os pontos dos jogadores
 int pontuacaoP, pontuacaoB;
+//váriavel que recebe 1 caso o jogador deseje reiniciar o jogo e 0 se não
+int reiniciar = 1;
 
 //método que seta o tabuleiro na sua forma inicial
 void setaTabuleiro()
@@ -77,7 +79,8 @@ int verificaModo()
 //método que dá as opções do modo de jogo e chama a função verificaModo
 void estabeleceModoDeJogo()
 {
-    printf("Escolha o modo do jogo:\n 1 - 1 Jogador\n 2 - 2 Jogadores \n");
+    printf("\nJogo de Othello.\n\nAceita como jogada letras maíusculas seguidas de um número,\nrepresentado a casa selecionada para a inserção da pedra.");
+    printf("\n\nEscolha o modo do jogo:\n 1 - 1 Jogador\n 2 - 2 Jogadores \n");
     modo = verificaModo();
 }
 
@@ -678,15 +681,15 @@ void verificaJogadaValida()
     {
         if (numJogadas > 0)
         {
-            // if (modo == 1 && cor == 66)
-            // {
-            turnoPC(numJogadas);
-            // }
-            // else
-            // {
-            //     pedeJogada();
-            //     verificaFormatacaoJogada(jogada);
-            // }
+            if (modo == 1 && cor == 66)
+            {
+                turnoPC(numJogadas);
+            }
+            else
+            {
+                pedeJogada();
+                verificaFormatacaoJogada(jogada);
+            }
         }
         else
         {
@@ -769,6 +772,7 @@ void mostraTabuleiro()
     }
 }
 
+//método que calcula os pontos e printa quando a partida é finalizada
 void finalizaJogo()
 {
     int i, k;
@@ -801,52 +805,87 @@ void finalizaJogo()
     }
 }
 
-void main()
+//método que reinicia as váriavéis caso o jogo for reiniciado;
+void limpaVariaves()
 {
-    srand(time(NULL));
-    setaTabuleiro();
-    estabeleceModoDeJogo();
-    pedeNomes();
-    //enquanto o estado do jogo não é alterado o tabuleiro é mostrado
-    //e uma nova jogada é solicitada ao jogador da vez
-    int cont = 0;
-    while (fimDeJogo != 1)
-    {
-        cont++;
-        if (turno % 2 != 0)
-        {
-            cor = 80;
-            corAdv = 66;
-        }
-        else
-        {
-            cor = 66;
-            corAdv = 80;
-        }
-        mostraTabuleiro();
-        verificaJogadaValida();
-    }
-    finalizaJogo();
-    int partidas, i;
-    FILE *arquivo = fopen("/home/mayara/code/othello/arquivo.txt", "a");
+    fimDeJogo = 0;
+    turno = 1;
+    pontuacaoB = 0;
+    pontuacaoP = 0;
+}
 
-    if (arquivo == NULL)
+//método que seta a variável reiniciar de acordo com a escolha do usuário
+void reiniciarJogo()
+{
+
+    char SouN[1];
+    printf("Deseja reiniciar o jogo (s/n)? ");
+    scanf("%s", SouN);
+    if (SouN[0] == 83 || SouN[0] == 115)
     {
-        printf("Não foi possível guardar os valores da partida.");
+        limpaVariaves();
+    }
+    else if (SouN[0] == 78 || SouN[0] == 110)
+    {
+        exit(0);
     }
     else
     {
-        while (!feof(arquivo))
+        printf("Valor inválido! Insira S para sim ou N para não.");
+        reiniciarJogo();
+    }
+}
+
+void main()
+{
+    while (reiniciar = 1)
+    {
+        srand(time(NULL));
+        setaTabuleiro();
+        estabeleceModoDeJogo();
+        pedeNomes();
+        //enquanto o estado do jogo não é alterado o tabuleiro é mostrado
+        //e uma nova jogada é solicitada ao jogador da vez
+        int cont = 0;
+        while (fimDeJogo != 1)
         {
-            i = fgetc(arquivo);
-            if (i == '\n')
+            cont++;
+            if (turno % 2 != 0)
             {
-                partidas++;
+                cor = 80;
+                corAdv = 66;
             }
+            else
+            {
+                cor = 66;
+                corAdv = 80;
+            }
+            mostraTabuleiro();
+            verificaJogadaValida();
         }
-        char dataToAppend[50];
-        sprintf(dataToAppend, "%d", partidas);
-        fputs(dataToAppend, arquivo);
-        fclose(arquivo);
+        finalizaJogo();
+        int partidas = 0;
+        char c;
+        FILE *arquivo = fopen("/home/mayara/code/othello/arquivo.txt", "a+");
+
+        if (arquivo == NULL)
+        {
+            printf("Não foi possível guardar os valores da partida.");
+        }
+        else
+        {
+            while ((c = fgetc(arquivo)) != EOF)
+            {
+                if (c == '\n')
+                {
+                    partidas++;
+                }
+            }
+            char dataToAppend[50];
+            sprintf(dataToAppend, "%d %s %d %s %d\n", partidas + 1, nome1, pontuacaoP, nome2, pontuacaoB);
+            fputs(dataToAppend, arquivo);
+            fclose(arquivo);
+        }
+        reiniciarJogo();
     }
 }

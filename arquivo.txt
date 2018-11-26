@@ -1,1 +1,21 @@
-Mayara
+1 a 36 Computador 28
+2 a 19 Computador 45
+3 a 15 Computador 49
+4 a 41 Computador 23
+5 a 23 Computador 41
+6 a 25 Computador 39
+7 a 87 Computador 41
+8 a 23 Computador 41
+9 a 85 Computador 43
+10 a 37 Computador 27
+11 a 41 Computador 23
+12 a 39 Computador 25
+13 a 36 Computador 28
+14 a 98 Computador 30
+15 a 37 Computador 27
+16 a 99 Computador 29
+17 a 23 Computador 41
+18 a 21 Computador 43
+19 a 21 Computador 43
+20 a 23 Computador 41
+21 a 36 Computador 28
